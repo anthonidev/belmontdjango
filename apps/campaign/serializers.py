@@ -1,42 +1,48 @@
 from rest_framework import serializers
 
-from .models import ListClient
+from apps.campaign.models import ListClient, Client
 
 
 class ListClientSerializer(serializers.ModelSerializer):
-    total = serializers.IntegerField(source="get_count")
-
     class Meta:
         model = ListClient
         fields = [
             'id',
             'title',
             'description',
-            'updated_at',
             'status',
-            'total'
+            'created_at',
+            'updated_at',
+            'slug',
         ]
 
 
-# class CartItemSerializer(serializers.ModelSerializer):
-#     product = ProductSerializer()
+class ClientSerializer(serializers.ModelSerializer):
+    fullname = serializers.CharField(source="get_fullname")
 
-#     class Meta:
-#         model = CartItem
-#         fields = ['id', 'product', 'count', ]
+    class Meta:
+        model = Client
+        fields = [
+            'id',
+            'name',
+            'lastname',
+            'email',
+            'phone',
+            'created_at',
+            'updated_at',
+            'slug',
+            'fullname'
+        ]
 
 
-# class CartSerializer(serializers.ModelSerializer):
-#     items = CartItemSerializer(many=True)
-#     amount = serializers.DecimalField(
-#         source="get_amount", max_digits=10, decimal_places=2)
-#     total_items = serializers.IntegerField(source="get_total_items")
+class ListItemClientSerializer(serializers.ModelSerializer):
+    client = ClientSerializer()
 
-#     class Meta:
-#         model = Cart
-#         fields = [
-#             'id',
-#             'total_items',
-#             'items',
-#             'amount'
-#         ]
+    class Meta:
+        model = ListClient
+        fields = [
+            'id',
+            'client',
+            'created_at',
+            'updated_at'
+        ]

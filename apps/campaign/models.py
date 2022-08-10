@@ -40,6 +40,7 @@ class ListClient(models.Model):
     status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    slug = models.SlugField(max_length=255, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Lista de cliente'
@@ -48,6 +49,14 @@ class ListClient(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            to_assign = slugify(self.title)
+            if ListClient.objects.filter(slug=to_assign).exists():
+                to_assign = to_assign+str(Client.objects.all().count())
+            self.slug = to_assign
+        super().save(*args, **kwargs)
 
 
 class ListItemClient(models.Model):
@@ -68,3 +77,30 @@ class ListItemClient(models.Model):
 
     def get_count(self):
         return self.client.count()
+
+
+class Campaign(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True)
+    status = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    slug = models.SlugField(max_length=255, null=True, blank=True)
+    list_client = models.ManyToManyField(
+        ListClient, related_name='roster', blank=True)
+
+    class Meta:
+        verbose_name = 'Campaña'
+        verbose_name_plural = 'Campañas'
+        ordering = ('-updated_at',)
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            to_assign = slugify(self.title)
+            if Campaign.objects.filter(slug=to_assign).exists():
+                to_assign = to_assign+str(Campaign.objects.all().count())
+            self.slug = to_assign
+        super().save(*args, **kwargs)

@@ -5,34 +5,46 @@ from rest_framework import status
 from django.conf import settings
 from django.template.loader import render_to_string
 
+from apps.campaign.models import Campaign, ListItemClient, Client
+
 
 class SendMailView(APIView):
-    def post(self, request, format=None):
+    def post(self, request, slug, format=None):
 
         user = self.request.user
-        data = self.request.data
+        # data = self.request.data
+        campaing = Campaign.objects.get(slug=slug)
 
-        fullname = str(data['fullname'])
+        people = []
 
-        mailContent = {
-            'name': fullname,
-        }
+        for list_campaign in campaing.list_client.all():
+            items_client = ListItemClient.objects.filter(
+                list_client__slug=list_campaign.slug)
+            for list_client in items_client:
+                if list_client.client.id not in people:
+                    people.append(list_client.client.id)
 
-        html = render_to_string('send_mail.html', {'mail': mailContent})
-        try:
-            send_mail(
-                subject='A cool subject',
-                message='A stunning message',
-                from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[user.email],
-                html_message=html
-            )
-            return Response(
-                {'success': 'send email'+" "+fullname},
-                status=status.HTTP_200_OK
-            )
-        except:
-            return Response(
-                {'error': 'failed to send email'},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+        count = 0
+        for person in people:
+            client = Client.objects.get(id=person)
+            mailContent = {
+                'name': client.name,
+                'lastname': client.lastname,
+            }
+
+            html = render_to_string('send_mail.html', {'mail': mailContent})
+            try:
+                send_mail(
+                    subject='A cool subject',
+                    message='A stunning message',
+                    from_email=settings.EMAIL_HOST_USER,
+                    recipient_list=[client.email],
+                    html_message=html
+                )
+                count += 1
+                print("send: ", client.email)
+
+            except:
+                pass
+
+        return Response({"Correos enviados": count})
