@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
-from apps.campaign.models import ListClient, Client
+from apps.campaign.models import ListContact, Contact
 
 
 class ListClientSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ListClient
+        model = ListContact
         fields = [
             'id',
             'title',
@@ -21,7 +21,7 @@ class ClientSerializer(serializers.ModelSerializer):
     fullname = serializers.CharField(source="get_fullname")
 
     class Meta:
-        model = Client
+        model = Contact
         fields = [
             'id',
             'name',
@@ -39,7 +39,7 @@ class ListItemClientSerializer(serializers.ModelSerializer):
     client = ClientSerializer()
 
     class Meta:
-        model = ListClient
+        model = ListContact
         fields = [
             'id',
             'client',

@@ -1,6 +1,6 @@
 
 from rest_framework import status, generics, permissions
-from apps.campaign.models import ListClient, Client, ListItemClient
+from apps.campaign.models import ListContact, ListItemContact
 from rest_framework.response import Response
 
 from apps.campaign.serializers import ClientSerializer, ListClientSerializer, ListItemClientSerializer
@@ -11,7 +11,7 @@ class ListClientView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated, )
     pagination_class = PageNumberPagination
     serializer_class = ListClientSerializer
-    queryset = ListClient.objects.all()
+    queryset = ListContact.objects.all()
 
     def list(self, request, format=None):
         # user = self.request.user
@@ -28,11 +28,11 @@ class ListClientDetailView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated, )
     pagination_class = PageNumberPagination
     serializer_class = ListItemClientSerializer
-    queryset = ListItemClient.objects.all()
+    queryset = ListItemContact.objects.all()
 
     def list(self, request, slug):
         queryset = self.get_queryset()
-        list_client = ListClient.objects.get(slug=slug)
+        list_client = ListContact.objects.get(slug=slug)
         queryset = queryset.filter(list_client=list_client)
         serializer = self.serializer_class(
             queryset, many=True, context={'request': request})

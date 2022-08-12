@@ -38,6 +38,7 @@ PROJECT_APPS = [
 MAIN_APPS = [
     'apps.mail',
     'apps.campaign',
+    'apps.company',
     # 'apps.cart',
     # 'apps.wishlist',
     # 'apps.shipping',

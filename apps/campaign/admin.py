@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import ListClient, Client, ListItemClient, Campaign
+from .models import ListContact, Contact, ListItemContact, Campaign
 
 
 class ListItemClientInline(admin.TabularInline):
-    model = ListItemClient
-    fields = ['client', ]
+    model = ListItemContact
+    fields = ['contact', ]
 
 
 class ListClientAdmin(admin.ModelAdmin):
@@ -12,7 +12,7 @@ class ListClientAdmin(admin.ModelAdmin):
     inlines = [ListItemClientInline]
 
 
-admin.site.register(ListClient, ListClientAdmin)
+admin.site.register(ListContact, ListClientAdmin)
 # admin.site.register(ListClient)
-admin.site.register(Client)
+admin.site.register(Contact)
 admin.site.register(Campaign)
