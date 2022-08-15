@@ -3,6 +3,7 @@ from django.template.defaultfilters import slugify
 
 from apps.company.models import Company
 
+
 class Contact(models.Model):
 
     class TypeContact(models.TextChoices):
@@ -10,8 +11,9 @@ class Contact(models.Model):
         client = 'cliente'
 
     type = models.CharField(
-        max_length=50, choices=TypeContact.choices, default=TypeContact.lead)    
-    company = models.ForeignKey(Company,related_name='company_contact',on_delete=models.CASCADE)
+        max_length=50, choices=TypeContact.choices, default=TypeContact.lead)
+    company = models.ForeignKey(
+        Company, related_name='company_contact', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     lastname = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, unique=True)
@@ -44,7 +46,8 @@ class Contact(models.Model):
 
 
 class ListContact(models.Model):
-    company = models.ForeignKey(Company,related_name='company_list_contact',on_delete=models.CASCADE)
+    company = models.ForeignKey(
+        Company, related_name='company_list_contact', on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     status = models.BooleanField(default=True)
@@ -76,7 +79,8 @@ class ListItemContact(models.Model):
         Contact, on_delete=models.CASCADE, related_name='contact')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    company = models.ForeignKey(Company,related_name='company_item_list',on_delete=models.CASCADE)
+    company = models.ForeignKey(
+        Company, related_name='company_item_list', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'item de contacto '
@@ -91,7 +95,8 @@ class ListItemContact(models.Model):
 
 
 class Campaign(models.Model):
-    company = models.ForeignKey(Company,related_name='company_campaigns',on_delete=models.CASCADE)
+    company = models.ForeignKey(
+        Company, related_name='company_campaigns', on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     status = models.BooleanField(default=True)

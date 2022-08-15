@@ -4,7 +4,7 @@ from .models import ListContact, Contact, ListItemContact, Campaign
 
 class ListItemClientInline(admin.TabularInline):
     model = ListItemContact
-    fields = ['contact', ]
+    fields = ['contact', 'company']
 
 
 class ListClientAdmin(admin.ModelAdmin):
