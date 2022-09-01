@@ -11,6 +11,7 @@ class Company(models.Model):
     token = models.CharField(max_length=40, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    ruc = models.CharField(max_length=11, blank=True, null=True)
 
     class Meta:
         verbose_name = 'Compania'
