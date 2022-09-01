@@ -224,7 +224,6 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = "user.UserAccount"
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 if not DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -235,3 +234,5 @@ if not DEBUG:
     EMAIL_PORT = os.environ.get('EMAIL_PORT')
     EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
     RECIPIENT_ADDRESS = os.environ.get('RECIPIENT_ADDRESS')
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
