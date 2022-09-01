@@ -16,8 +16,6 @@ DEBUG = os.environ.get('DEBUG')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = True
-
 ALLOWED_HOSTS = ['*']
 
 DJANGO_APPS = [
